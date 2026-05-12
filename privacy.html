@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Privacy Policy — Lecture Recorder</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#FAFAF7;--bg-alt:#F4F3EE;--surface:#EEEDE7;--surface-2:#E5E4DD;
+  --text:#1A1A1A;--text-2:#5C5C5A;--text-3:#9A9A96;
+  --border:#E5E4DD;--border-2:#D5D4CC;
+  --rec:#E14545;--active:#E0A040;--active-text:#A06820;
+  --mono:'JetBrains Mono',SF Mono,monospace;--sans:'Inter',system-ui,sans-serif
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;letter-spacing:-0.005em}
+::selection{background:var(--active);color:var(--text)}a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+header.site{padding:16px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(250,250,247,0.88);backdrop-filter:blur(8px);z-index:10}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em;color:var(--text)}
+.brand .dot{width:8px;height:8px;background:var(--rec);border-radius:2px}
+.nav-links{display:flex;gap:24px;font-size:13px;font-weight:500;color:var(--text-2)}
+.nav-links a:hover{color:var(--text)}
+
+main{padding:80px 0 96px;border-bottom:1px solid var(--border);background:#FFFFFF}
+.doc{max-width:720px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.eyebrow .pill{background:var(--surface);border:1px solid var(--border-2);padding:3px 10px;border-radius:99px;color:var(--active-text)}
+h1{font-size:56px;font-weight:600;line-height:1.05;letter-spacing:-0.025em;margin-bottom:20px;max-width:18ch;color:var(--text)}
+h1 .amber{color:var(--active-text)}
+.meta-line{font-family:var(--mono);font-size:12px;color:var(--text-3);letter-spacing:0.02em;margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.lead{font-size:19px;line-height:1.55;color:var(--text);font-weight:500;margin:0 0 48px;padding-left:20px;border-left:2px solid var(--active)}
+
+h2{font-size:24px;font-weight:600;letter-spacing:-0.015em;margin:48px 0 14px;padding-top:32px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:14px;color:var(--text)}
+h2 .num{font-family:var(--mono);font-size:13px;color:var(--active-text);font-weight:500;letter-spacing:0.04em}
+h3{font-family:var(--mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--active-text);margin:24px 0 8px}
+p{margin:0 0 14px;color:var(--text-2);line-height:1.7}
+p strong{color:var(--text);font-weight:500}
+ul,ol{padding-left:24px;margin:0 0 14px;color:var(--text-2)}
+ul li,ol li{margin-bottom:6px;line-height:1.65}
+ul li::marker,ol li::marker{color:var(--active-text)}
+code{font-family:var(--mono);font-size:0.88em;background:var(--surface);padding:1px 6px;border-radius:3px;color:var(--text);border:1px solid var(--border-2)}
+a.inline{color:var(--active-text);border-bottom:1px solid currentColor;transition:border-color .12s}
+a.inline:hover{border-color:transparent}
+
+table.retention{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0 18px;border:1px solid var(--border-2);border-radius:6px;overflow:hidden}
+table.retention th,table.retention td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:top}
+table.retention th{color:var(--text-3);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;font-weight:500;background:var(--surface)}
+table.retention td:first-child{color:var(--text);font-weight:500}
+table.retention tr:last-child td{border-bottom:0}
+
+footer.site{padding:32px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text-3);font-family:var(--mono);background:var(--bg)}
+footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1200px;margin:0 auto;padding:0 24px}
+footer.site a{color:var(--text-2);margin-right:20px}
+footer.site a:hover{color:var(--text)}
+
+@media(max-width:780px){h1{font-size:36px}h2{font-size:20px}main{padding:48px 0 64px}.lead{font-size:17px;padding-left:14px}}
+</style></head><body>
+
+<header class="site"><div class="container nav">
+<a href="index.html" class="brand"><span class="dot"></span>Lecture Recorder</a>
+<nav class="nav-links">
+<a href="index.html#how">How It Works</a>
+<a href="index.html">Home</a>
+</nav>
+</div></header>
+
+<main><div class="container"><article class="doc">
+
+<div class="eyebrow"><span class="pill">Privacy policy</span><span>v0.3 · 2026</span></div>
+<h1>What we do with your <span class="amber">recordings.</span></h1>
+<p class="meta-line">Last updated · [will-be-set-on-publish] · Applies to all versions of the Lecture Recorder Chrome extension.</p>
+
+<p class="lead">The recording stays on your device. The audio touches our server only for AI Notes, only briefly, and is deleted within 60 seconds.</p>
+
+<h2><span class="num">01</span>The short version</h2>
+<p>We record the active browser tab to a file in your Downloads folder. If you use AI Notes, we send the audio to our server, transcribe and summarize it, send you a <code>.docx</code>, and delete the audio within 60 seconds. <strong>We do not ask for your name, email, or any account. We do not train AI on your recordings.</strong></p>
+
+<h2><span class="num">02</span>What we record</h2>
+<p>When you press Record, the extension captures audio and video from the active browser tab using Chrome's <code>tabCapture</code> API. The recording is written directly to your Downloads folder as an <code>.m4a</code> or <code>.mp4</code> file. We never see this file. It stays on your device.</p>
+
+<h2><span class="num">03</span>What we do not record</h2>
+<p>We do not access your camera. The microphone is captured only when you select the "Audio + Mic" mode, and only for the duration of that recording. We do not capture other tabs, your screen outside the tab, your typing, your clipboard, your browsing history, or any page content. The extension only runs while you press Record and stops the moment you press Stop.</p>
+
+<h2><span class="num">04</span>AI Notes</h2>
+<p>AI Notes is enabled by default. After you stop recording, here is exactly what happens:</p>
+<ol>
+<li>The audio file is uploaded over HTTPS to our backend (FastAPI server in <strong>[vps-region]</strong>).</li>
+<li>The audio is sent to our <strong>transcription sub-processor</strong>. Their API is configured with zero data retention — they do not store or train on submitted audio.</li>
+<li>The transcript is sent to our <strong>summary sub-processor</strong>. Their API does not train on submitted data.</li>
+<li>We assemble a <code>.docx</code> file with Summary on top and Transcript below, and send it back to your browser, which saves it to your Downloads folder.</li>
+<li><strong>Within 60 seconds of returning the <code>.docx</code>, the audio file is deleted from our server. The transcript is deleted at the same time. We keep nothing.</strong></li>
+</ol>
+<p>We do not use your recordings, transcripts, or summaries to train our models. Our sub-processors are contractually prohibited from doing so. The current list of sub-processors is published at <strong>[subprocessors-url]</strong> — if we add or change a vendor, that page updates first.</p>
+
+<h2><span class="num">05</span>The 300-minute monthly limit</h2>
+<p>To prevent abuse of the free service, each installation can use up to 300 minutes of AI Notes per rolling 30 days. We track this with:</p>
+<ul>
+<li>An anonymous <code>install_id</code> — a random UUID generated on first run, stored in <code>chrome.storage.local</code> on your device.</li>
+<li>A counter on our server keyed only to that <code>install_id</code> and the total minutes recorded in the rolling window.</li>
+</ul>
+<p>The <code>install_id</code> is not linked to your name, email, IP address (which we discard after each request), Google account, or any other personally identifiable information. Uninstalling and reinstalling the extension generates a new <code>install_id</code> and a new quota.</p>
+<p><strong>When you hit the limit:</strong> the recording still works and the media file is still saved to Downloads. We just do not generate the <code>.docx</code> for that session. The widget shows the reset date.</p>
+
+<h2><span class="num">06</span>Future Google Sign-In</h2>
+<p>We plan to add an optional Google Sign-In as a way to raise the 300-minute limit. <strong>It will not be required to use the extension.</strong> If and when you choose to sign in, we will only receive your Google account email and use it solely to attach the higher quota to your account. We will publish an updated policy before launching this feature.</p>
+
+<h2><span class="num">07</span>Permissions used</h2>
+<ul>
+<li><code>tabCapture</code> — to record audio and video of the active tab.</li>
+<li><code>downloads</code> — to save the recording (and the <code>.docx</code>) to your Downloads folder.</li>
+<li><code>storage</code> — to remember your settings, your <code>install_id</code>, and your remaining quota.</li>
+<li><code>offscreen</code> — to keep the recorder running while you switch tabs (required by Chrome Manifest V3).</li>
+</ul>
+<p>We do not request <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>webRequest</code>, or <code>host_permissions</code> for browsing data.</p>
+
+<h2><span class="num">08</span>Data retention summary</h2>
+<table class="retention">
+<thead><tr><th>Data</th><th>Where</th><th>Kept for</th></tr></thead>
+<tbody>
+<tr><td>Recording (.m4a / .mp4)</td><td>Your device</td><td>Until you delete it</td></tr>
+<tr><td>Notes (.docx)</td><td>Your device</td><td>Until you delete it</td></tr>
+<tr><td>Audio uploaded for AI Notes</td><td>Our server</td><td>Within 60 seconds</td></tr>
+<tr><td>Transcript on our server</td><td>Our server</td><td>Within 60 seconds</td></tr>
+<tr><td>install_id + quota counter</td><td>Our server</td><td>Until you uninstall (deletable on request)</td></tr>
+<tr><td>Server access logs</td><td>Our server</td><td>14 days</td></tr>
+</tbody>
+</table>
+
+<h2><span class="num">09</span>Your rights (GDPR, UK GDPR, CCPA)</h2>
+<p>Even though we hold almost nothing, you can:</p>
+<ul>
+<li>Ask what we have linked to your <code>install_id</code></li>
+<li>Ask us to delete it</li>
+<li>Object to processing</li>
+</ul>
+<p>Email <strong>lecturerecorder8@gmail.com</strong> with your <code>install_id</code> (visible in extension Settings → About). We respond within 30 days. There is nothing to "log in" to.</p>
+<p><strong>Legal basis for processing (GDPR Art. 6):</strong></p>
+<ul>
+<li>AI Notes processing — your <strong>consent</strong> (granted when you keep AI Notes enabled in Settings).</li>
+<li><code>install_id</code> + quota counter — our <strong>legitimate interest</strong> in preventing service abuse.</li>
+</ul>
+
+<h2><span class="num">10</span>Children</h2>
+<p>Lecture Recorder is intended for users 13 and older. We do not knowingly collect data from children under 13. Since we do not collect names, emails, or IP-linked profiles in the first place, we have no way to identify a child user. If you are a parent and believe we have data tied to your child's <code>install_id</code>, email us and we will delete it.</p>
+
+<h2><span class="num">11</span>Changes to this policy</h2>
+<p>If we change this policy, we will update the "Last updated" date at the top of this page and post a notice in the extension before the change takes effect.</p>
+
+<h2><span class="num">12</span>Contact</h2>
+<p><strong>lecturerecorder8@gmail.com</strong></p>
+
+</article></div></main>
+
+<footer class="site"><div class="row">
+<div><a href="index.html">home</a><a href="index.html#how">how it works</a><a href="https://github.com/Alkhimik888">github</a></div>
+<div>© 2026 lecture-recorder · v0.3</div>
+</div></footer>
+
+</body></html>
