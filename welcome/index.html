@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -9,74 +9,117 @@
 <link rel="icon" href="/favicon.ico"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-  :root{
-    --cream:#f7eddc;
-    --cream-soft:#fbf5e8;
+  :root, html[data-theme="light"]{
+    --bg:#f7eddc;
     --orange:#d14525;
-    --orange-hover:#b73a1f;
+    --glow:rgba(209,69,37,0.18);
     --espresso:#1a0e08;
     --muted:#6b554a;
     --line:#e4d4b6;
+    --shadow:rgba(26,14,8,0.14);
+    --toggle-bg:rgba(26,14,8,0.06);
+    --toggle-hover:rgba(26,14,8,0.12);
+  }
+  html[data-theme="dark"]{
+    --bg:#1a0e08;
+    --orange:#ec5a3a;
+    --glow:rgba(236,90,58,0.22);
+    --espresso:#f7eddc;
+    --muted:#bda594;
+    --line:#3a2419;
+    --shadow:rgba(0,0,0,0.45);
+    --toggle-bg:rgba(247,237,220,0.08);
+    --toggle-hover:rgba(247,237,220,0.18);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--cream);color:var(--espresso);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;letter-spacing:-0.005em}
-  body{min-height:100vh;padding:48px 24px 80px}
-  .wrap{max-width:920px;margin:0 auto}
+  html,body{background:var(--bg);color:var(--espresso);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;letter-spacing:-0.005em;transition:background .35s ease, color .35s ease}
+  body{min-height:100vh;padding:14px 24px 56px;position:relative;overflow-x:hidden}
 
-  /* Hero */
-  .hero{text-align:center;margin-bottom:72px}
-  .hero h1{font-size:54px;font-weight:800;line-height:1.05;letter-spacing:-0.03em;margin-bottom:14px}
+  /* ONE soft glow behind hero — sun rising, no shapes competing for attention */
+  .glow{position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:1100px;height:680px;background:radial-gradient(ellipse at center, var(--glow) 0%, transparent 62%);pointer-events:none;z-index:0;transition:background .35s ease}
+
+  /* Theme toggle — quieter, scale instead of rotate */
+  .theme-toggle{position:fixed;top:14px;right:18px;z-index:5;width:42px;height:42px;border-radius:50%;border:0;background:var(--toggle-bg);color:var(--espresso);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease, transform .2s ease;-webkit-tap-highlight-color:transparent}
+  .theme-toggle:hover{background:var(--toggle-hover);transform:scale(1.06)}
+  .theme-toggle:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .theme-toggle svg{width:21px;height:21px;display:block}
+  html[data-theme="light"] .icon-moon{display:block}
+  html[data-theme="light"] .icon-sun{display:none}
+  html[data-theme="dark"]  .icon-moon{display:none}
+  html[data-theme="dark"]  .icon-sun{display:block}
+
+  .wrap{position:relative;z-index:1;max-width:920px;margin:0 auto}
+
+  /* Staggered fade-in on load — premium feel without being flashy */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .hero,.step,.value{opacity:0;animation:fadeUp .6s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero{animation-delay:.05s}
+  .step:nth-of-type(2){animation-delay:.18s}
+  .step:nth-of-type(3){animation-delay:.30s}
+  .value{animation-delay:.42s}
+  @media (prefers-reduced-motion:reduce){.hero,.step,.value{opacity:1;animation:none}}
+
+  .hero{text-align:center;padding-top:48px;margin-bottom:40px}
+  .hero h1{font-size:50px;font-weight:800;line-height:1.05;letter-spacing:-0.03em}
   .hero h1 .accent{color:var(--orange)}
-  .hero p.sub{font-size:20px;color:var(--muted);font-weight:500;letter-spacing:-0.01em}
 
-  /* Step blocks */
-  .step{margin-bottom:64px}
-  .step h2{font-size:30px;font-weight:700;letter-spacing:-0.02em;margin-bottom:12px;color:var(--espresso)}
-  .step .num{display:inline-block;width:38px;height:38px;border-radius:50%;background:var(--orange);color:var(--cream-soft);font-size:18px;font-weight:800;text-align:center;line-height:38px;margin-right:12px;vertical-align:middle;box-shadow:0 4px 10px rgba(209,69,37,0.25)}
-  .step .caption{font-size:16px;color:var(--muted);margin-top:16px;text-align:center;font-weight:500}
-  .step img{display:block;width:100%;height:auto;border-radius:14px}
+  .step{margin-bottom:52px}
+  .step-inner{max-width:88%;margin:0 auto}
+  .step h2{font-size:26px;font-weight:700;letter-spacing:-0.02em;margin-bottom:18px;color:var(--espresso);padding-left:7%}
+  .step .num{display:inline-block;width:34px;height:34px;border-radius:50%;background:var(--orange);color:#fff6e8;font-size:16px;font-weight:800;text-align:center;line-height:34px;margin-right:12px;vertical-align:middle;box-shadow:0 4px 12px rgba(209,69,37,0.28)}
+  .step img{display:block;width:100%;height:auto;border-radius:18px;box-shadow:0 24px 60px -18px var(--shadow), 0 8px 18px -8px var(--shadow);transition:transform .35s ease, box-shadow .35s ease}
+  .step:hover img{transform:translateY(-3px);box-shadow:0 32px 72px -18px var(--shadow), 0 10px 22px -10px var(--shadow)}
+  .step .caption{font-size:15px;color:var(--muted);margin-top:18px;text-align:center;font-weight:500}
 
-  /* Value bar */
-  .value{text-align:center;padding:48px 24px 8px;border-top:1px solid var(--line);margin-top:40px}
-  .value .tagline{font-size:28px;font-weight:800;letter-spacing:-0.02em;color:var(--espresso);margin-bottom:8px}
+  .value{text-align:center;padding:40px 24px 8px;border-top:1px solid var(--line);margin-top:24px}
+  .value .tagline{font-size:26px;font-weight:800;letter-spacing:-0.02em;color:var(--espresso);margin-bottom:8px}
   .value .tagline .accent{color:var(--orange)}
   .value .hint{font-size:14px;color:var(--muted);font-weight:500;font-style:italic}
 
-  /* Footer */
-  footer{margin-top:72px;text-align:center;font-size:13px;color:var(--muted)}
-  footer a{color:var(--orange);text-decoration:none;font-weight:600}
-  footer a:hover{text-decoration:underline}
-  footer .sep{margin:0 10px;opacity:0.4}
-
   @media (max-width:640px){
-    body{padding:32px 16px 56px}
-    .hero h1{font-size:36px}
-    .hero p.sub{font-size:16px}
-    .step h2{font-size:22px}
-    .step .num{width:30px;height:30px;font-size:15px;line-height:30px}
-    .step{margin-bottom:48px}
+    body{padding:10px 14px 48px}
+    .theme-toggle{top:10px;right:12px;width:38px;height:38px}
+    .glow{top:-100px;width:720px;height:440px}
+    .hero{padding-top:8px;margin-bottom:24px}
+    .hero h1{font-size:32px}
+    .step h2{font-size:19px}
+    .step .num{width:26px;height:26px;font-size:13px;line-height:26px;margin-right:8px}
+    .step-inner{max-width:100%}
+    .step{margin-bottom:40px}
+    .step img{border-radius:12px}
     .value .tagline{font-size:20px}
   }
 </style>
 </head>
 <body>
+
+  <div class="glow" aria-hidden="true"></div>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+
   <main class="wrap">
 
     <section class="hero">
-      <h1>🎉 <span class="accent">Lecture Recorder</span> is installed</h1>
-      <p class="sub">One last step — pin it to your toolbar.</p>
+      <h1>&#127881; <span class="accent">Lecture Recorder</span> is installed</h1>
     </section>
 
     <section class="step">
-      <h2><span class="num">1</span>Pin Lecture Recorder for quick access</h2>
-      <img src="mockup-1.png" alt="Click the puzzle icon, then click the pin next to Lecture Recorder"/>
-      <p class="caption">Click the puzzle, then click the pin</p>
+      <div class="step-inner">
+        <h2><span class="num">1</span>Pin Lecture Recorder for quick access</h2>
+        <img src="mockup-1.png" alt="Click the puzzle icon, then click the pin next to Lecture Recorder"/>
+        <p class="caption">Click the puzzle, then click the pin</p>
+      </div>
     </section>
 
     <section class="step">
-      <h2><span class="num">2</span>Click the icon to start recording</h2>
-      <img src="mockup-2.png" alt="The Lecture Recorder icon is now pinned to your Chrome toolbar"/>
-      <p class="caption">Now click the icon to start recording</p>
+      <div class="step-inner">
+        <h2><span class="num">2</span>Click the icon to start recording</h2>
+        <img src="mockup-2.png" alt="The Lecture Recorder icon is now pinned to your Chrome toolbar"/>
+        <p class="caption">Now click the icon to start recording</p>
+      </div>
     </section>
 
     <section class="value">
@@ -84,12 +127,25 @@
       <p class="hint">Use headphones for best audio quality.</p>
     </section>
 
-    <footer>
-      <a href="https://lecture-recorder.app/privacy.html">Privacy</a>
-      <span class="sep">·</span>
-      <a href="https://github.com/Alkhimik888/lecture-recorder" rel="noopener">GitHub</a>
-    </footer>
-
   </main>
+
+<script>
+(function(){
+  var html = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var saved = null;
+  try { saved = localStorage.getItem('lr-welcome-theme'); } catch (_) {}
+  if (saved === 'dark' || saved === 'light') {
+    html.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+  btn.addEventListener('click', function(){
+    var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    try { localStorage.setItem('lr-welcome-theme', next); } catch (_) {}
+  });
+})();
+</script>
 </body>
 </html>
