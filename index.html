@@ -1,6 +1,8 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="description" content="AI Lecture Recorder app records lectures online, captures audio + microphone and transcribes it into notes. Records any browser tab."/>
 <meta property="og:title" content="Lecture Recorder — One click Recording + AI notes."/>
 <meta property="og:description" content="AI Lecture Recorder app records lectures online, captures audio + microphone and transcribes it into notes. Records any browser tab."/>
@@ -9,227 +11,421 @@
 <meta name="twitter:title" content="Lecture Recorder — One click Recording + AI notes."/>
 <meta name="twitter:description" content="AI Lecture Recorder app records lectures online, captures audio + microphone and transcribes it into notes. Records any browser tab."/>
 <title>Lecture Recorder — One click Recording + AI notes.</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png"/>
+<link rel="apple-touch-icon" sizes="128x128" href="icons/icon128.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  /* Light theme — palette F gamma preserved (amber + red accents on warm off-white) */
-  --bg:#FAFAF7;
-  --bg-alt:#F4F3EE;
-  --surface:#EEEDE7;
-  --surface-2:#E5E4DD;
-  --text:#1A1A1A;
-  --text-2:#5C5C5A;
-  --text-3:#9A9A96;
-  --border:#E5E4DD;
-  --border-2:#D5D4CC;
-  --rec:#E14545;
-  --active:#E0A040;             /* amber base — for surfaces, buttons, accents */
-  --active-text:#A06820;        /* slightly darker amber for text on light — readable */
-  --active-hover:#B47220;
-  --mono:'JetBrains Mono',SF Mono,monospace;
-  --sans:'Inter',system-ui,sans-serif;
-  /* Real popup colors — match D:\Dev\bootcamp\popup\popup.css exactly */
-  --pop-bg:#1A1A1A;
-  --pop-fg:#F5F5F5;
-  --pop-muted:#9A9A9A;
-  --pop-surface:#0F0F0F;
-  --pop-surface-2:#2A2A2A;
-  --pop-border:#2A2A2A;
-  --pop-border-2:#3A3A3A;
-  --pop-accent:#F59E0B;
-  --pop-danger:#DC2626;
+:root, html[data-theme="light"]{
+  /* Pietra warm — same tokens as /welcome */
+  --bg:#f7eddc;
+  --bg-soft:#fbf4e6;
+  --orange:#d14525;
+  --orange-bright:#ff5c3c;
+  --orange-hover:#b83a25;
+  --glow:rgba(209,69,37,0.18);
+  --espresso:#1a0e08;
+  --muted:#6b554a;
+  --muted-2:#8a7669;
+  --line:#e4d4b6;
+  --line-strong:#d8c39b;
+  --shadow:rgba(26,14,8,0.14);
+  --shadow-soft:rgba(26,14,8,0.06);
+  --toggle-bg:rgba(26,14,8,0.06);
+  --toggle-hover:rgba(26,14,8,0.12);
+  --card:#ffffff;
+  --card-warm:#fff8ee;
+}
+html[data-theme="dark"]{
+  --bg:#1a0e08;
+  --bg-soft:#22150d;
+  --orange:#ec5a3a;
+  --orange-bright:#ff7548;
+  --orange-hover:#ff8a5e;
+  --glow:rgba(236,90,58,0.22);
+  --espresso:#f7eddc;
+  --muted:#bda594;
+  --muted-2:#9c8472;
+  --line:#3a2419;
+  --line-strong:#4d3225;
+  --shadow:rgba(0,0,0,0.45);
+  --shadow-soft:rgba(0,0,0,0.25);
+  --toggle-bg:rgba(247,237,220,0.08);
+  --toggle-hover:rgba(247,237,220,0.18);
+  --card:#22150d;
+  --card-warm:#2a1a10;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;letter-spacing:-0.005em}
-::selection{background:var(--active);color:var(--text)}a{color:inherit;text-decoration:none}
-.container{max-width:1200px;margin:0 auto;padding:0 24px}
+html,body{background:var(--bg);color:var(--espresso);font-family:'Inter',system-ui,-apple-system,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;letter-spacing:-0.005em;transition:background .35s ease, color .35s ease}
+body{min-height:100vh;position:relative;overflow-x:hidden}
+::selection{background:var(--orange);color:#fff}
+a{color:inherit;text-decoration:none}
+code{font-family:'SF Mono','JetBrains Mono',ui-monospace,monospace;font-size:0.88em;background:var(--bg-soft);padding:1px 6px;border-radius:4px;color:var(--espresso);border:1px solid var(--line)}
 
-header.site{padding:16px 0;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(250,250,247,0.88);backdrop-filter:blur(8px);z-index:10}
-.nav{display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px;letter-spacing:-0.01em;color:var(--text)}
-.brand .dot{width:8px;height:8px;background:var(--rec);border-radius:2px}
-.nav-links{display:flex;gap:24px;font-size:13px;font-weight:500;color:var(--text-2)}
-.nav-links a:hover{color:var(--text)}
-kbd{font-family:var(--mono);font-size:11px;background:var(--surface);border:1px solid var(--border-2);border-radius:4px;padding:1px 6px;color:var(--text-2)}
+/* ── Soft glow behind hero ─────────────────────────────────────────── */
+.glow{position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:1200px;height:720px;background:radial-gradient(ellipse at center, var(--glow) 0%, transparent 62%);pointer-events:none;z-index:0;transition:background .35s ease}
 
-.hero{padding:56px 0 64px}
-.hero-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:56px;align-items:start}
+/* ── Theme toggle ──────────────────────────────────────────────────── */
+.theme-toggle{position:fixed;top:14px;right:18px;z-index:50;width:42px;height:42px;border-radius:50%;border:0;background:var(--toggle-bg);color:var(--espresso);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s ease, transform .2s ease;-webkit-tap-highlight-color:transparent;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.theme-toggle:hover{background:var(--toggle-hover);transform:scale(1.06)}
+.theme-toggle:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.theme-toggle svg{width:21px;height:21px;display:block}
+html[data-theme="light"] .icon-moon{display:block}
+html[data-theme="light"] .icon-sun{display:none}
+html[data-theme="dark"]  .icon-moon{display:none}
+html[data-theme="dark"]  .icon-sun{display:block}
+
+.container{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+
+/* ── Header ────────────────────────────────────────────────────────── */
+header.site{padding:20px 0 0;position:relative;z-index:2}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px;letter-spacing:-0.01em;color:var(--espresso)}
+.brand-mark{width:26px;height:26px;flex-shrink:0;display:block;filter:drop-shadow(0 2px 6px rgba(209,69,37,0.28))}
+.nav-links{display:flex;gap:24px;font-size:13px;font-weight:500;color:var(--muted)}
+.nav-links a{padding:6px 2px;transition:color .15s}
+.nav-links a:hover{color:var(--orange)}
+
+/* ── Animations ────────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero-text,.hero-mockup,.section-title,.promises,.modes-grid,.privacy-card,.footer-row{opacity:0;animation:fadeUp .65s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-text{animation-delay:.05s}
+.hero-mockup{animation-delay:.18s}
+.section-title{animation-delay:.05s}
+.modes-grid{animation-delay:.15s}
+.promises{animation-delay:.10s}
+.privacy-card{animation-delay:.10s}
+.footer-row{animation-delay:.05s}
+@media (prefers-reduced-motion:reduce){.hero-text,.hero-mockup,.section-title,.promises,.modes-grid,.privacy-card,.footer-row{opacity:1;animation:none}}
+
+/* ── Hero ──────────────────────────────────────────────────────────── */
+.hero{padding:72px 0 96px}
+.hero-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:56px;align-items:center}
 .hero-text{min-width:0}
-.eyebrow{font-family:var(--mono);font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px}
-h1{font-size:56px;font-weight:600;line-height:1.05;letter-spacing:-0.025em;margin-bottom:12px;max-width:14ch;color:var(--text)}
-h1 span.amber{color:var(--active-text)}
-.h1-sub{font-family:var(--mono);font-size:13px;color:var(--text-3);letter-spacing:0.02em;margin:0 0 24px;font-style:italic}
-.h1-sub code{font-family:var(--mono);font-style:normal;background:transparent;border:0;padding:0;color:var(--text-2)}
-.lede{font-size:18px;color:var(--text-2);max-width:580px;margin-bottom:32px;line-height:1.5}
-/* Animation 3: arrow drift on Learn more button */
-.btn-secondary kbd{display:inline-block;animation:arrow-drift 2s ease-in-out infinite}
-@keyframes arrow-drift{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
-.cta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{font:500 13px var(--sans);padding:7px 14px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background .12s,border-color .12s,color .12s;border:1px solid transparent}
-.btn-primary{background:var(--active);color:var(--text)}
-.btn-primary:hover{background:var(--active-hover);color:#FFFFFF}
-.btn-primary[aria-disabled="true"]{background:var(--surface);color:var(--text-3);border-color:var(--border-2);cursor:not-allowed}
-.btn-secondary{background:#FFFFFF;color:var(--text);border-color:var(--border-2)}
-.btn-secondary:hover{background:var(--surface)}
+.eyebrow{font-size:12px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:22px;display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 4px rgba(209,69,37,0.12)}
+h1{font-size:56px;font-weight:800;line-height:1.05;letter-spacing:-0.035em;margin-bottom:18px;color:var(--espresso)}
+h1 .line{display:block;white-space:nowrap}
+h1 .accent{color:var(--orange);display:block;white-space:nowrap}
+.h1-sub{font-size:18px;color:var(--muted);max-width:580px;margin-bottom:36px;line-height:1.5}
+.lede{font-size:16px;color:var(--muted-2);max-width:560px;margin-bottom:36px;line-height:1.55}
+.hero-meta{margin-top:24px;font-size:13.5px;color:var(--muted-2);font-family:'SF Mono','JetBrains Mono',ui-monospace,monospace;letter-spacing:-0.005em;line-height:1.5;max-width:560px}
+.cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn{font:600 14px 'Inter',sans-serif;padding:13px 22px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:transform .18s cubic-bezier(.34,1.56,.64,1),background .18s,box-shadow .22s,color .18s;border:1px solid transparent;letter-spacing:-0.005em;cursor:pointer}
+.btn-primary{background:var(--orange);color:#fff8ee;box-shadow:0 4px 14px rgba(209,69,37,0.32),0 1px 0 rgba(0,0,0,0.04)}
+.btn-primary:hover{background:var(--orange-hover);transform:translateY(-2px);box-shadow:0 8px 22px rgba(209,69,37,0.42)}
+.btn-primary[aria-disabled="true"]{background:var(--line);color:var(--muted-2);box-shadow:none;cursor:not-allowed;transform:none}
+.btn-primary[aria-disabled="true"]:hover{background:var(--line);transform:none;box-shadow:none}
+.btn-primary .cta-icon{width:18px;height:18px;display:block;flex-shrink:0}
+.btn-secondary{background:transparent;color:var(--espresso);border-color:var(--line-strong)}
+.btn-secondary:hover{background:var(--toggle-bg);transform:translateY(-1px)}
+.btn-secondary .arrow{display:inline-block;transition:transform .25s ease;animation:arrow-bob 2s ease-in-out infinite}
+@keyframes arrow-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
 
-/* Real popup mockup — faithful to D:\Dev\bootcamp\popup\popup.html + popup.css */
-.pop-frame{display:flex;justify-content:center;align-items:flex-start;justify-self:center;padding-top:8px}
-.pop{width:240px;background:var(--pop-bg);border-radius:8px;padding:14px 16px;box-shadow:0 32px 64px rgba(15,15,20,0.20),0 6px 20px rgba(15,15,20,0.10),0 0 0 1px rgba(15,15,20,0.05);color:var(--pop-fg);font-family:system-ui,-apple-system,sans-serif;font-size:12px;line-height:1.4;animation:pop-in 0.6s ease-out 0.3s both}
-@keyframes pop-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.pop h5{margin:0 0 12px;font-size:14px;font-weight:600;letter-spacing:0.02em;color:var(--pop-accent)}
-.pop .tab-preview{display:flex;align-items:center;gap:8px;margin:0 0 12px;padding:6px 8px;background:var(--pop-surface);border:1px solid var(--pop-border);border-radius:6px;min-height:28px;overflow:hidden}
-.pop .tab-favicon{width:16px;height:16px;flex-shrink:0;background:#FF0000;border-radius:2px;display:flex;align-items:center;justify-content:center;color:#FFFFFF;font-size:10px;font-weight:700;font-family:Arial,sans-serif}
-.pop .tab-title{font-size:12px;color:var(--pop-fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.pop .mode-select{border:1px solid var(--pop-border);border-radius:6px;padding:8px 10px 6px;margin:0 0 12px;display:flex;flex-direction:column;gap:4px;opacity:0.6}
-.pop .mode-select legend{padding:0 6px;font-size:11px;color:var(--pop-muted);letter-spacing:0.02em}
-.pop .mode-row{font-size:12px;display:flex;align-items:center;gap:6px}
-.pop .radio{width:11px;height:11px;border:1.5px solid var(--pop-muted);border-radius:50%;position:relative;flex-shrink:0}
-.pop .radio.checked{border-color:var(--pop-accent)}
-.pop .radio.checked::after{content:"";position:absolute;inset:1.5px;border-radius:50%;background:var(--pop-accent)}
-.pop .filename-row{display:flex;flex-direction:column;gap:4px;margin:0 0 12px}
-.pop .filename-label{font-size:11px;color:var(--pop-muted);letter-spacing:0.02em}
-.pop .filename-input{width:100%;padding:6px 8px;border:1px solid var(--pop-border);border-radius:4px;background:var(--pop-surface);color:var(--pop-fg);font-size:12px;font-family:inherit}
-.pop .mute-row{display:flex;justify-content:flex-end;margin:-6px 0 8px}
-.pop .btn-mute{width:28px;height:28px;background:var(--pop-surface-2);border:1px solid var(--pop-border-2);border-radius:50%;color:var(--pop-muted);display:flex;align-items:center;justify-content:center}
-.pop .btn-mute svg{width:14px;height:14px}
-.pop .controls{display:flex;gap:8px;margin-bottom:10px}
-.pop .btn{flex:1;padding:10px 12px;border:0;border-radius:6px;font-size:13px;font-weight:600;color:var(--pop-fg);font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
-.pop .btn-pause{background:var(--pop-surface-2)}
-.pop .btn-stop{background:var(--pop-surface-2)}
-.pop .cancel{background:transparent;border:0;color:var(--pop-muted);font-size:11px;padding:4px 0;text-align:left;display:block}
-.pop .status{margin:0;font-size:12px;color:var(--pop-danger);font-weight:600;min-height:16px;margin-top:2px}
-.pop .rec-dot{display:inline-block;width:7px;height:7px;background:var(--pop-danger);border-radius:50%;margin-right:6px;vertical-align:1px;animation:rec-breath 2.4s ease-in-out infinite;box-shadow:0 0 0 0 rgba(220,38,38,0.4)}
-@keyframes rec-breath{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(220,38,38,0.35)}50%{opacity:0.55;box-shadow:0 0 0 4px rgba(220,38,38,0)}}
-@media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:40px}.pop-frame{justify-self:center}}
-@media(max-width:560px){.pop-frame{display:none}}
+/* ── Hero mockup (Layout B replica, scaled ×1.5 for hero presence) ──── */
+.hero-mockup{display:flex;justify-content:center;align-items:center;justify-self:center;position:relative}
+.pop-frame{position:relative;padding:28px;background:transparent;border-radius:28px;animation:pop-float 6s ease-in-out infinite;transform-origin:center}
+.pop-frame::before{content:"";position:absolute;inset:-50px;background:radial-gradient(closest-side,rgba(209,69,37,0.32) 0%,rgba(255,92,60,0.14) 35%,transparent 70%);filter:blur(8px);pointer-events:none;z-index:-1;animation:pop-glow 5.5s ease-in-out infinite}
+@keyframes pop-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pop-glow{0%,100%{opacity:0.55;transform:scale(1)}50%{opacity:0.9;transform:scale(1.06)}}
+@media (prefers-reduced-motion:reduce){
+  .pop-frame{animation:none}
+  .pop-frame::before{animation:none;opacity:0.6}
+}
 
+/* Real popup tokens — Pietra warm v3 (popup.css), bumped ×1.5 */
+.pop{
+  --pop-card:#ffffff;
+  --pop-text:#1f2026;
+  --pop-text-2:#6b6b6b;
+  --pop-text-3:#888780;
+  --pop-surface-2:#f5f3ef;
+  --pop-orange:#ff5c3c;
+  --pop-orange-deep:#d14525;
+  --pop-orange-pale:#ffe6c7;
+  --pop-line:#e8e8ea;
+  width:360px;background:var(--pop-card);border-radius:21px;padding:21px 24px;color:var(--pop-text);font-family:'Inter',system-ui,sans-serif;font-size:18px;line-height:1.4;position:relative;box-shadow:0 2px 4px rgba(31,32,38,0.05),0 20px 48px -12px rgba(31,32,38,0.22),0 36px 84px -18px rgba(31,32,38,0.16)
+}
+.pop-stack{display:flex;flex-direction:column;gap:11px}
+.pop-brand-row{height:48px;display:flex;align-items:center;gap:11px;padding:0 6px}
+.pop-brand-icon{width:27px;height:27px;flex-shrink:0;display:block}
+.pop-brand{font-size:18px;font-weight:500;color:var(--pop-text);letter-spacing:-0.01em}
+.pop-segmented{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:0;background:transparent;border-radius:14px}
+.pop-pill{background:#ffffff;border:0;padding:12px 6px;border-radius:12px;font-size:15px;font-weight:400;color:var(--pop-text);font-family:inherit;text-align:center;white-space:nowrap;letter-spacing:-0.01em;line-height:1;box-shadow:0 1px 3px rgba(31,32,38,0.08),0 0 0 1px rgba(31,32,38,0.04)}
+.pop-pill.active{background:var(--pop-text);color:#fff;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,0.22)}
+.pop-cta{width:100%;padding:17px 0;margin-top:11px;background:var(--pop-orange);color:#fff;border:0;border-radius:12px;font-size:18.5px;font-weight:500;font-family:inherit;letter-spacing:-0.01em;text-align:center;box-shadow:0 1px 0 rgba(0,0,0,0.04),0 4px 10px rgba(255,92,60,0.32)}
+.pop-ai-row{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:21px;font-size:15.5px;color:#666;opacity:0.95;text-align:center}
+.pop-ai-check{width:18px;height:18px;border-radius:4.5px;background:var(--pop-orange);position:relative;flex-shrink:0;box-shadow:inset 0 0 0 1.5px var(--pop-orange-deep)}
+.pop-ai-check::after{content:"";position:absolute;left:5px;top:2px;width:6px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 
-section{padding:64px 0;border-top:1px solid var(--border)}
-h2{font-size:28px;font-weight:600;letter-spacing:-0.02em;margin-bottom:8px;color:var(--text)}
-.section-sub{color:var(--text-2);font-size:15px;margin-bottom:40px;max-width:600px}
+/* ── Sections ──────────────────────────────────────────────────────── */
+section{padding:80px 0;position:relative;z-index:1}
+section + section{border-top:1px solid var(--line)}
+.section-title{margin-bottom:48px;max-width:680px}
+.eyebrow-sm{font-size:11px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:0.14em;margin-bottom:14px;display:inline-block}
+h2{font-size:40px;font-weight:800;letter-spacing:-0.028em;line-height:1.08;margin-bottom:14px;color:var(--espresso)}
+h2 .accent{color:var(--orange)}
+.section-sub{color:var(--muted);font-size:17px;line-height:1.5;max-width:620px}
 
-.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border-2);border-radius:8px;overflow:hidden;background:#FFFFFF}
-.mode{padding:24px;border-right:1px solid var(--border);background:#FFFFFF}
-.mode:last-child{border-right:0}
-.mode-tag{font-family:var(--mono);font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.mode-tag::before{content:"";display:block;width:8px;height:8px;background:var(--active);border-radius:50%}
-.mode h3{font-size:16px;font-weight:600;margin-bottom:6px;letter-spacing:-0.01em;color:var(--text)}
-.mode p{font-size:13px;color:var(--text-2);line-height:1.5;margin-bottom:16px}
-.mode .files{font-family:var(--mono);font-size:11px;color:var(--text-3);padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
-.mode .files b{color:var(--text);font-weight:500}
+/* ── Three modes ───────────────────────────────────────────────────── */
+.modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.mode{padding:26px 24px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 6px 18px -8px var(--shadow-soft);transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;display:flex;flex-direction:column;gap:14px}
+.mode:hover{transform:translateY(-3px);box-shadow:0 16px 36px -12px var(--shadow);border-color:var(--line-strong)}
+.mode-icon{width:44px;height:44px;border-radius:12px;background:rgba(209,69,37,0.10);color:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mode-icon svg{width:22px;height:22px;display:block}
+.mode-head{display:flex;flex-direction:column;gap:4px}
+.mode h3{font-size:17px;font-weight:700;letter-spacing:-0.018em;color:var(--espresso);line-height:1.25;margin:0}
+.mode p{font-size:14px;color:var(--muted);line-height:1.5;margin:0}
+.mode-files{font-family:'SF Mono','JetBrains Mono',ui-monospace,monospace;font-size:11.5px;color:var(--muted-2);padding-top:14px;margin-top:auto;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center}
+.mode-files b{color:var(--espresso);font-weight:600}
 
-.promises{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--border-2);margin-top:32px}
-.promises div{padding:24px 24px 24px 0;border-bottom:1px solid var(--border);border-right:1px solid var(--border)}
-.promises div:nth-child(2n){border-right:0;padding-right:0;padding-left:24px}
-.promises h4{font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-0.01em;color:var(--text)}
-.promises h4::before{content:"—";color:var(--active-text);margin-right:8px;font-weight:400}
-.promises p{font-size:13px;color:var(--text-2);line-height:1.5}
+/* ── Promises ──────────────────────────────────────────────────────── */
+.promises{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.promise{padding:32px 30px;background:var(--card-warm);border:1px solid var(--line);border-radius:16px;transition:transform .25s ease,border-color .25s ease}
+.promise:hover{transform:translateY(-2px);border-color:var(--orange)}
+.promise-num{font-family:'SF Mono',ui-monospace,monospace;font-size:11px;color:var(--orange);font-weight:600;letter-spacing:0.08em;margin-bottom:12px;display:block}
+.promise h4{font-size:19px;font-weight:700;margin-bottom:10px;letter-spacing:-0.018em;color:var(--espresso);line-height:1.25}
+.promise p{font-size:15px;color:var(--muted);line-height:1.55}
 
-.privacy-card{background:#FFFFFF;border:1px solid var(--border-2);border-radius:8px;padding:32px;display:grid;grid-template-columns:200px 1fr;gap:32px}
-.privacy-card aside{font-family:var(--mono);font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em}
-.privacy-card p{color:var(--text-2);margin-bottom:12px;font-size:14px}
-.privacy-card p:last-child{margin-bottom:0}
-.privacy-card a{color:var(--active-text);border-bottom:1px solid currentColor}
-code{font-family:var(--mono);font-size:0.88em;background:var(--surface);padding:1px 5px;border-radius:3px;color:var(--text);border:1px solid var(--border-2)}
+/* ── Privacy ───────────────────────────────────────────────────────── */
+.privacy-card{background:linear-gradient(155deg,var(--card),var(--card-warm));border:1px solid var(--line);border-radius:22px;padding:44px;display:grid;grid-template-columns:240px 1fr;gap:48px;align-items:center;box-shadow:0 16px 40px -20px var(--shadow)}
+.privacy-card aside{display:flex;flex-direction:column;gap:10px}
+.privacy-title{font-size:26px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:var(--espresso);margin:0}
+.privacy-body{display:flex;flex-direction:column;gap:18px}
+.privacy-body p{color:var(--muted);font-size:16px;line-height:1.6;margin:0}
+.privacy-link{display:inline-flex;align-items:center;gap:6px;color:var(--orange);font-weight:600;font-size:14px;border-bottom:1px solid currentColor;align-self:flex-start;transition:color .15s,gap .15s}
+.privacy-link:hover{color:var(--orange-hover);gap:10px}
 
-footer.site{padding:32px 0;border-top:1px solid var(--border);font-size:12px;color:var(--text-3);font-family:var(--mono)}
-footer.site .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
-footer.site a{color:var(--text-2);margin-right:20px}
-footer.site a:hover{color:var(--text)}
+/* ── Footer ────────────────────────────────────────────────────────── */
+footer.site{padding:36px 0;border-top:1px solid var(--line);font-size:13px;color:var(--muted-2);position:relative;z-index:1}
+footer.site .footer-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px;align-items:center}
+footer.site .links{display:flex;gap:24px}
+footer.site a{color:var(--muted);transition:color .15s}
+footer.site a:hover{color:var(--orange)}
+footer.site .meta{font-family:'SF Mono',ui-monospace,monospace;font-size:12px}
 
-@media(max-width:780px){h1{font-size:36px}.modes-grid{grid-template-columns:1fr}.mode{border-right:0;border-bottom:1px solid var(--border)}.promises{grid-template-columns:1fr}.promises div{padding:20px 0!important;border-right:0}.privacy-card{grid-template-columns:1fr;padding:24px}}
-</style></head><body>
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width:980px){
+  .hero{padding:56px 0 80px}
+  .hero-grid{grid-template-columns:1fr;gap:56px}
+  .hero-mockup{justify-self:center}
+  h1{font-size:48px;max-width:none}
+  .modes-grid{grid-template-columns:1fr}
+  .promises{grid-template-columns:1fr 1fr}
+  .privacy-card{grid-template-columns:1fr;padding:36px;gap:24px;text-align:left}
+  .privacy-title{font-size:24px}
+}
+@media (max-width:640px){
+  .container{padding:0 20px}
+  .theme-toggle{top:10px;right:12px;width:38px;height:38px}
+  .glow{top:-120px;width:780px;height:480px}
+  header.site{padding:14px 0 0}
+  .nav-links{gap:18px;font-size:12px}
+  .hero{padding:32px 0 64px}
+  .eyebrow{font-size:11px;letter-spacing:0.10em;margin-bottom:18px}
+  h1{font-size:36px;letter-spacing:-0.028em}
+  .h1-sub{font-size:16px;margin-bottom:28px}
+  .hero-meta{font-size:12.5px;margin-top:20px}
+  .btn{padding:12px 18px;font-size:13.5px}
+  section{padding:56px 0}
+  h2{font-size:30px}
+  .section-sub{font-size:15px}
+  .section-title{margin-bottom:32px}
+  .promises{grid-template-columns:1fr;gap:14px}
+  .promise{padding:24px 22px}
+  .promise h4{font-size:17px}
+  .promise p{font-size:14px}
+  .privacy-card{padding:26px;border-radius:18px}
+  .privacy-body p{font-size:15px}
+  footer.site .footer-row{flex-direction:column;align-items:flex-start;gap:14px}
+  /* Popup mockup scales down on small screens */
+  .pop{width:300px;padding:18px 20px;border-radius:18px;font-size:15px}
+  .pop-stack{gap:9px}
+  .pop-brand-row{height:40px;gap:9px}
+  .pop-brand-icon{width:22px;height:22px}
+  .pop-brand{font-size:15px}
+  .pop-segmented{gap:7px}
+  .pop-pill{padding:10px 4px;font-size:13px;border-radius:10px}
+  .pop-cta{padding:14px 0;margin-top:9px;font-size:16px;border-radius:10px}
+  .pop-ai-row{margin-top:17px;font-size:13px;gap:7px}
+  .pop-ai-check{width:15px;height:15px}
+  .pop-frame{padding:22px}
+}
+@media (max-width:380px){
+  .pop{width:260px;padding:16px 18px;font-size:14px}
+  .pop-brand{font-size:14px}
+  .pop-pill{font-size:12px;padding:9px 4px}
+  .pop-cta{font-size:15px;padding:13px 0}
+  .pop-ai-row{font-size:12px}
+  .pop-frame{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="glow" aria-hidden="true"></div>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</button>
 
 <header class="site"><div class="container nav">
-<a href="#" class="brand"><span class="dot"></span>Lecture Recorder</a>
-<nav class="nav-links"><a href="#how">How It Works</a><a href="privacy.html" target="_blank" rel="noopener">Privacy</a></nav>
+  <a href="#" class="brand">
+    <img class="brand-mark" src="icons/icon128.png" alt="" width="128" height="128"/>
+    Lecture Recorder
+  </a>
+  <nav class="nav-links">
+    <a href="#modes">Modes</a>
+    <a href="#promises">Why</a>
+    <a href="privacy.html" target="_blank" rel="noopener">Privacy</a>
+  </nav>
 </div></header>
 
-<section class="hero" style="border-top:0"><div class="container">
-<div class="hero-grid">
-<div class="hero-text">
-<div class="eyebrow">Chrome extension · v0.3</div>
-<h1>One click Recording <span class="amber">+ AI notes.</span></h1>
-<p class="h1-sub">Records the tab. Drops <code>.docx</code> notes next to it.</p>
-<p class="lede">A Chrome extension for recording video in your browser — lectures, webinars, walkthroughs. Drops the media file and a <code>.docx</code> with summary and transcript into your Downloads folder. 300 minutes a month for free.</p>
-<div class="cta">
-<a class="btn btn-primary" href="#" aria-disabled="true">Add to Chrome — Coming soon</a>
-<a class="btn btn-secondary" href="#how">Learn more <kbd>↓</kbd></a>
-</div>
-</div>
-<div class="pop-frame" role="img" aria-label="Lecture Recorder popup — recording in progress">
-<div class="pop">
-<h5>Lecture Recorder</h5>
-<div class="tab-preview">
-<div class="tab-favicon" aria-hidden="true">▶</div>
-<span class="tab-title">MIT 18.06 — Linear Algebra · Lecture 5</span>
-</div>
-<fieldset class="mode-select">
-<legend>Mode</legend>
-<div class="mode-row"><span class="radio checked"></span>Audio</div>
-<div class="mode-row"><span class="radio"></span>Video</div>
-<div class="mode-row"><span class="radio"></span>Audio + Mic</div>
-</fieldset>
-<div class="filename-row">
-<span class="filename-label">Filename</span>
-<div class="filename-input">lecture-2026-05-12-1430</div>
-</div>
-<div class="mute-row">
-<div class="btn-mute" title="Mute speakers (recording continues)" aria-hidden="true">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 0 0 1.5 12c0 .898.121 1.768.35 2.595.341 1.241 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06ZM18.584 5.106a.75.75 0 0 1 1.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 0 1-1.06-1.06 8.25 8.25 0 0 0 0-11.668.75.75 0 0 1 0-1.06Z"/><path d="M15.932 7.757a.75.75 0 0 1 1.061 0 6 6 0 0 1 0 8.486.75.75 0 0 1-1.06-1.061 4.5 4.5 0 0 0 0-6.364.75.75 0 0 1 0-1.06Z"/></svg>
-</div>
-</div>
-<div class="controls">
-<div class="btn btn-pause">⏸ Pause</div>
-<div class="btn btn-stop">■ Stop</div>
-</div>
-<div class="cancel">✕ Cancel</div>
-<p class="status"><span class="rec-dot"></span>Recording…</p>
-</div>
-</div>
-</div>
-</div>
-</section>
+<section class="hero"><div class="container">
+  <div class="hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow">Free Chrome extension</span>
+      <h1><span class="line">One click Recording</span><span class="accent">+ AI notes</span></h1>
+      <p class="h1-sub">Records the tab. Drops <code>.docx</code> notes next to it.</p>
+      <p class="lede">A Chrome extension for recording video in your browser — lectures, webinars, walkthroughs. Drops the media file and a <code>.docx</code> with summary and transcript into your Downloads folder.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#" aria-disabled="true">
+          <svg class="cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+          Install extension
+        </a>
+        <a class="btn btn-secondary" href="#modes">See how it works <span class="arrow">↓</span></a>
+      </div>
+    </div>
 
-
-<section id="how"><div class="container">
-<h2>Three modes.</h2>
-<p class="section-sub">Pick the one that fits the video. Each mode produces a media file and a <code>.docx</code> with summary + transcript next to it.</p>
-<div class="modes-grid">
-<div class="mode"><div class="mode-tag">audio_only · default</div><h3>Smaller files. Listen on the go.</h3><p>Captures sound only. Lightest on the laptop. Best when the speaker talks more than they draw.</p><div class="files"><span>files</span><b>.m4a + .docx</b></div></div>
-<div class="mode"><div class="mode-tag">audio_mic</div><h3>The full conversation.</h3><p>Records the tab audio mixed with your spoken comments. One mixed file. Best when you talk back to what's playing.</p><div class="files"><span>files</span><b>.m4a + .docx</b></div></div>
-<div class="mode"><div class="mode-tag">video</div><h3>The full tab.</h3><p>Captures slides, whiteboard, demos — with the tab's audio. Use when the visual matters as much as the audio.</p><div class="files"><span>files</span><b>.mp4 + .docx</b></div></div>
-</div>
+    <div class="hero-mockup" role="img" aria-label="Lecture Recorder popup in idle state — Audio mode selected, AI Notes on">
+      <div class="pop-frame">
+        <div class="pop">
+          <div class="pop-stack">
+            <div class="pop-brand-row">
+              <svg class="pop-brand-icon" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <defs>
+                  <linearGradient id="p-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff8f4"/><stop offset="100%" stop-color="#ffe6c7"/></linearGradient>
+                  <radialGradient id="p-halo" cx="0.5" cy="0.5" r="0.5"><stop offset="40%" stop-color="rgba(255,92,60,0.22)"/><stop offset="100%" stop-color="rgba(255,92,60,0)"/></radialGradient>
+                  <radialGradient id="p-orb" cx="0.38" cy="0.32" r="0.75"><stop offset="0%" stop-color="#ffd4b8"/><stop offset="35%" stop-color="#ff8855"/><stop offset="75%" stop-color="#ff5c3c"/><stop offset="100%" stop-color="#b83a25"/></radialGradient>
+                </defs>
+                <rect x="0" y="0" width="128" height="128" rx="28" fill="url(#p-bg)"/>
+                <circle cx="64" cy="64" r="50" fill="url(#p-halo)"/>
+                <circle cx="64" cy="64" r="34" fill="url(#p-orb)"/>
+                <ellipse cx="55" cy="52" rx="12" ry="8" fill="rgba(255,255,255,0.45)"/>
+              </svg>
+              <span class="pop-brand">Lecture Recorder</span>
+            </div>
+            <div class="pop-segmented" role="radiogroup" aria-label="Recording mode">
+              <span class="pop-pill active">Audio</span>
+              <span class="pop-pill">Audio+Mic</span>
+              <span class="pop-pill">Video</span>
+            </div>
+          </div>
+          <div class="pop-cta">Start recording</div>
+          <div class="pop-ai-row">
+            <span class="pop-ai-check" aria-hidden="true"></span>
+            <span>AI Notes — .docx saves automatically</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div></section>
 
-<section><div class="container">
-<h2>What you don't have to do.</h2>
-<p class="section-sub">A useful product is often defined by what it leaves out. Five things this one happily refuses.</p>
-<div class="promises">
-<div><h4>No sign-up</h4><p>Install and click. No account, no email, no onboarding form to fill.</p></div>
-<div><h4>No API keys, no settings to fight with</h4><p>AI Notes run on our side. You never see a config screen, never paste a token.</p></div>
-<div><h4>Recording is always unlimited</h4><p>Two-hour video or three-hour session — same file, same quality. AI Notes have 300 min / month free.</p></div>
-<div><h4>Audio deleted in 60 seconds</h4><p>When you stop, audio briefly visits our server to be processed, then it's gone.</p></div>
-<div><h4>No data tied to your name</h4><p>Usage is tracked by an anonymous install ID on your machine. No email, no profile.</p></div>
-<div><h4>No telemetry on recording</h4><p>Zero outbound network requests during recording itself. The file lands locally first.</p></div>
-</div>
+<section id="modes"><div class="container">
+  <div class="section-title">
+    <span class="eyebrow-sm">Three modes</span>
+    <h2>Pick what <span class="accent">fits the video</span>.</h2>
+    <p class="section-sub">Every mode drops a media file and a <code>.docx</code> with summary + transcript into your Downloads.</p>
+  </div>
+  <div class="modes-grid">
+    <div class="mode">
+      <div class="mode-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h2l2-7 4 14 4-10 2 5h4"/></svg>
+      </div>
+      <div class="mode-head">
+        <h3>Audio</h3>
+        <p>Lightest on the laptop. Best when the speaker talks more than they draw.</p>
+      </div>
+      <div class="mode-files"><span>files</span><b>.m4a + .docx</b></div>
+    </div>
+    <div class="mode">
+      <div class="mode-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0z"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+      </div>
+      <div class="mode-head">
+        <h3>Audio + Mic</h3>
+        <p>Tab audio mixed with your spoken comments. One file, the full conversation.</p>
+      </div>
+      <div class="mode-files"><span>files</span><b>.m4a + .docx</b></div>
+    </div>
+    <div class="mode">
+      <div class="mode-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="mode-head">
+        <h3>Video</h3>
+        <p>Slides, whiteboard, demos — with audio. Use when visuals matter as much as voice.</p>
+      </div>
+      <div class="mode-files"><span>files</span><b>.mp4 + .docx</b></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="promises"><div class="container">
+  <div class="section-title">
+    <span class="eyebrow-sm">Why this one</span>
+    <h2>No accounts. No keys. <span class="accent">No tracking.</span></h2>
+    <p class="section-sub">Four things this product happily refuses — so you can install, click, and forget it's there.</p>
+  </div>
+  <div class="promises">
+    <div class="promise"><span class="promise-num">01</span><h4>Zero setup</h4><p>No sign-up, no email, no API keys, no settings screen to fight with. Install the extension, click the icon, hit Start recording.</p></div>
+    <div class="promise"><span class="promise-num">02</span><h4>Unlimited recording</h4><p>Two-hour lecture, three-hour session — same file, same quality. AI Notes are free up to 300 min / month; the recording itself is always unlimited.</p></div>
+    <div class="promise"><span class="promise-num">03</span><h4>Audio gone in 60 seconds</h4><p>For AI Notes your audio briefly visits our server, gets transcribed, then it's deleted within a minute. Recording without AI Notes never leaves your machine.</p></div>
+    <div class="promise"><span class="promise-num">04</span><h4>Fully anonymous</h4><p>No name, no email, no profile — usage tracked only by an anonymous install ID on your device. Zero outbound requests during recording.</p></div>
+  </div>
 </div></section>
 
 <section id="privacy"><div class="container">
-<h2>Privacy.</h2>
-<p class="section-sub">Recording stays local. Audio briefly visits our server only for AI Notes, then it's gone.</p>
-<div class="privacy-card">
-<aside>Privacy summary</aside>
-<div>
-<p>The media file is captured by Chrome's built-in <code>tabCapture</code> API and written straight to your Downloads folder. We never see it.</p>
-<p>For AI Notes, audio is uploaded over HTTPS to our backend, processed, and returned to you as a <code>.docx</code>. The audio is deleted from our server within 60 seconds.</p>
-<p>No signup, no account, no email collected. Usage is tracked by an anonymous install ID stored on your device. <a href="privacy.html" target="_blank" rel="noopener">Read the full privacy policy →</a></p>
-</div>
-</div>
+  <div class="privacy-card">
+    <aside>
+      <span class="eyebrow-sm">Privacy</span>
+      <h3 class="privacy-title">The short version.</h3>
+    </aside>
+    <div class="privacy-body">
+      <p>The media file is captured by Chrome's built-in <code>tabCapture</code> API and written straight to your Downloads — we never see it. AI Notes audio is sent over HTTPS, transcribed, and deleted within 60 seconds.</p>
+      <a class="privacy-link" href="privacy.html" target="_blank" rel="noopener">Read the full privacy policy →</a>
+    </div>
+  </div>
 </div></section>
 
-<footer class="site"><div class="container row">
-<div><a href="#how">how_it_works</a><a href="privacy.html" target="_blank" rel="noopener">privacy</a><a href="https://github.com/Alkhimik888">github</a></div>
-<div>© 2026 lecture-recorder · v0.3</div>
+<footer class="site"><div class="container footer-row">
+  <div class="links">
+    <a href="#modes">How it works</a>
+    <a href="privacy.html" target="_blank" rel="noopener">Privacy</a>
+    <a href="https://github.com/Alkhimik888" target="_blank" rel="noopener">GitHub</a>
+  </div>
+  <div class="meta">© 2026 lecture-recorder · v0.3</div>
 </div></footer>
-</body></html>
+
+<script>
+(function(){
+  var html = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var saved = null;
+  try { saved = localStorage.getItem('lr-landing-theme'); } catch (_) {}
+  if (saved === 'dark' || saved === 'light') {
+    html.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+  btn.addEventListener('click', function(){
+    var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    try { localStorage.setItem('lr-landing-theme', next); } catch (_) {}
+  });
+})();
+</script>
+</body>
+</html>
