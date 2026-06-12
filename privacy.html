@@ -256,8 +256,6 @@ footer.site .footer-links{display:flex;gap:20px}
   try { saved = localStorage.getItem('lr-landing-theme'); } catch (_) {}
   if (saved === 'dark' || saved === 'light') {
     html.setAttribute('data-theme', saved);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    html.setAttribute('data-theme', 'dark');
   }
   btn.addEventListener('click', function(){
     var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';

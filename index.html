@@ -428,8 +428,6 @@ footer.site .meta{font-family:'SF Mono',ui-monospace,monospace;font-size:12px}
   try { saved = localStorage.getItem('lr-landing-theme'); } catch (_) {}
   if (saved === 'dark' || saved === 'light') {
     html.setAttribute('data-theme', saved);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    html.setAttribute('data-theme', 'dark');
   }
   btn.addEventListener('click', function(){
     var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
