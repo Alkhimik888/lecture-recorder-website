@@ -167,7 +167,7 @@ footer.site .footer-links{display:flex;gap:20px}
 <p>When you press Record, the extension captures audio and video from the active browser tab using Chrome's <code>tabCapture</code> API. The recording is written directly to your Downloads folder as an <code>.m4a</code> or <code>.mp4</code> file, and a copy is also kept in the browser's private on-device storage (OPFS) so the extension can offer an in-app player and sharing (see sections 05 and 06). This file stays on your device — we never see it — unless you choose to use AI Notes on it (section 04) or create a share link for it (section 05).</p>
 
 <h2><span class="num">03</span>What we do not record</h2>
-<p>We do not access your camera. The microphone is captured only when you select the "Audio + Mic" mode, and only for the duration of that recording. We do not capture other tabs, your screen outside the tab, your typing, your clipboard, your browsing history, or any page content. The extension only runs while you press Record and stops the moment you press Stop.</p>
+<p>We do not access your camera. The microphone is captured only when you select the "Audio + Mic" mode, and only for the duration of that recording. We do not capture other tabs, your screen outside the tab, your typing, your clipboard, or your browsing history. We do not read the content of pages you visit, with one narrow, opt-in exception you trigger yourself: on a YouTube video page, if you press the "Get YT Transcript" button, the extension reads only that video's own caption text (its subtitles) so it can turn them into notes for you. It never reads any other page content, and it only does this on the tab you are on, at the moment you click. The recorder itself only runs while you press Record and stops the moment you press Stop.</p>
 
 <h2><span class="num">04</span>AI Notes</h2>
 <p>AI Notes is enabled by default. After you stop recording, here is exactly what happens:</p>
@@ -218,13 +218,14 @@ footer.site .footer-links{display:flex;gap:20px}
 <li><code>tabCapture</code> — to record audio and video of the active tab.</li>
 <li><code>offscreen</code> — to run the recorder, the audio pipeline, and share uploads in a background document (required by Chrome Manifest V3, so recording continues while you switch tabs).</li>
 <li><code>downloads</code> — to save the recording (and the <code>.docx</code>) to your Downloads folder.</li>
-<li><code>activeTab</code> — to identify and capture the tab you chose to record.</li>
+<li><code>activeTab</code> — to identify and capture the tab you chose to record, and — only when you click "Get YT Transcript" on a YouTube video — to reach that one tab so its captions can be read.</li>
 <li><code>storage</code> and <code>unlimitedStorage</code> — to remember your settings, your <code>install_id</code>, and your remaining quota, and to hold your on-device recordings library (section 06).</li>
 <li><code>sidePanel</code> — to show the library and summaries in a side panel.</li>
 <li><code>idle</code> and <code>alarms</code> — to manage recording timers and to run the one-time AI Notes retry (section 04).</li>
 <li><code>notifications</code> — to tell you when a recording or your notes are ready.</li>
+<li><code>scripting</code> — used only when you press "Get YT Transcript" on a YouTube video: the extension briefly injects a small script into that one tab to read the video's own caption text, then sends only those captions to our server to make your notes. It is never used on any other site, is not a persistent content script, and runs only on your click.</li>
 </ul>
-<p>We do not request <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>webRequest</code>, or any <code>host_permissions</code> for browsing data. The extension does not inject scripts into web pages you visit.</p>
+<p>We do not request <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>webRequest</code>, or any <code>host_permissions</code> for browsing data. The extension does not run any always-on or automatic scripts on the pages you visit; the only script it ever injects is the one described above — the one-off, click-triggered read of a YouTube video's own captions on the tab you are on.</p>
 
 <h2><span class="num">10</span>Data retention summary</h2>
 <table class="retention">
