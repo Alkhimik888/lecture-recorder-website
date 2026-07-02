@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="Privacy policy for the Lecture Recorder Chrome extension. The recording stays on your device. Audio uploaded for AI Notes is deleted within 60 seconds."/>
+<meta name="description" content="Privacy policy for the Lecture Recorder Chrome extension. Recordings stay on your device unless you use AI Notes or create a share link. Shared files are end-to-end encrypted; the AI Notes audio is deleted within 60 seconds."/>
 <title>Privacy Policy — Lecture Recorder</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png"/>
@@ -156,15 +156,15 @@ footer.site .footer-links{display:flex;gap:20px}
 
 <span class="eyebrow">Privacy policy</span>
 <h1>What we do with your <span class="accent">recordings</span></h1>
-<p class="meta-line">Last updated · [will-be-set-on-publish] · Applies to all versions of the Lecture Recorder Chrome extension.</p>
+<p class="meta-line">Last updated · July 2, 2026 · Applies to all versions of the Lecture Recorder Chrome extension.</p>
 
-<p class="lead">The recording stays on your device. The audio touches our server only for AI Notes, only briefly, and is deleted within 60 seconds.</p>
+<p class="lead">By default your recording stays on your device. It only leaves your device in two cases you control: when you use AI Notes (audio is sent to our server, then deleted within 60 seconds), and when a share link is created (the file is end-to-end encrypted on your device before it is uploaded, and erased from our server after 15 minutes).</p>
 
 <h2><span class="num">01</span>The short version</h2>
-<p>We record the active browser tab to a file in your Downloads folder. If you use AI Notes, we send the audio to our server, transcribe and summarize it, send you a <code>.docx</code>, and delete the audio within 60 seconds. <strong>We do not ask for your name, email, or any account. We do not train AI on your recordings.</strong></p>
+<p>We record the active browser tab to a file in your Downloads folder, and also keep a copy in the browser's private storage so you can replay and share it from inside the extension. If you use AI Notes, we send the audio to our server, transcribe and summarize it, send you a <code>.docx</code>, and delete the audio within 60 seconds. If you share a recording, the file is <strong>encrypted on your device</strong> before it is uploaded, and the encrypted copy is erased from our server after 15 minutes. <strong>We do not ask for your name, email, or any account. We do not train AI on your recordings.</strong></p>
 
 <h2><span class="num">02</span>What we record</h2>
-<p>When you press Record, the extension captures audio and video from the active browser tab using Chrome's <code>tabCapture</code> API. The recording is written directly to your Downloads folder as an <code>.m4a</code> or <code>.mp4</code> file. We never see this file. It stays on your device.</p>
+<p>When you press Record, the extension captures audio and video from the active browser tab using Chrome's <code>tabCapture</code> API. The recording is written directly to your Downloads folder as an <code>.m4a</code> or <code>.mp4</code> file, and a copy is also kept in the browser's private on-device storage (OPFS) so the extension can offer an in-app player and sharing (see sections 05 and 06). This file stays on your device — we never see it — unless you choose to use AI Notes on it (section 04) or create a share link for it (section 05).</p>
 
 <h2><span class="num">03</span>What we do not record</h2>
 <p>We do not access your camera. The microphone is captured only when you select the "Audio + Mic" mode, and only for the duration of that recording. We do not capture other tabs, your screen outside the tab, your typing, your clipboard, your browsing history, or any page content. The extension only runs while you press Record and stops the moment you press Stop.</p>
@@ -172,15 +172,36 @@ footer.site .footer-links{display:flex;gap:20px}
 <h2><span class="num">04</span>AI Notes</h2>
 <p>AI Notes is enabled by default. After you stop recording, here is exactly what happens:</p>
 <ol>
-<li>The audio file is uploaded over HTTPS to our backend (FastAPI server in <strong>[vps-region]</strong>).</li>
+<li>The audio file is uploaded over HTTPS to our backend server. If the upload is interrupted before it finishes (for example, you close the browser mid-upload), the extension will automatically retry it <strong>once</strong> on the next browser start, re-uploading the audio from the on-device copy. No new data category is involved — it is the same AI Notes audio you had already chosen to process.</li>
 <li>The audio is sent to our <strong>transcription sub-processor</strong>. Their API is configured with zero data retention — they do not store or train on submitted audio.</li>
 <li>The transcript is sent to our <strong>summary sub-processor</strong>. Their API does not train on submitted data.</li>
 <li>We assemble a <code>.docx</code> file with Summary on top and Transcript below, and send it back to your browser, which saves it to your Downloads folder.</li>
 <li><strong>Within 60 seconds of returning the <code>.docx</code>, the audio file is deleted from our server. The transcript is deleted at the same time. We keep nothing.</strong></li>
 </ol>
-<p>We do not use your recordings, transcripts, or summaries to train our models. Our sub-processors are contractually prohibited from doing so. The current list of sub-processors is published at <strong>[subprocessors-url]</strong> — if we add or change a vendor, that page updates first.</p>
+<p>We do not use your recordings, transcripts, or summaries to train our models. Our sub-processors — a speech-to-text transcription provider and a large-language-model summarization provider — are contractually prohibited from doing so. If we add or change a vendor, we will update this policy first. To request the current, named list of sub-processors, email us at the address in section 15.</p>
 
-<h2><span class="num">05</span>The 300-minute monthly limit</h2>
+<h2><span class="num">05</span>Share links (end-to-end encrypted)</h2>
+<p>Lecture Recorder can turn a recording into a private link (and a QR code) so you can open it on your phone or send it to someone. This is the only case where your recording's <em>content</em> leaves your device — and even then, <strong>we cannot read it</strong>.</p>
+<p>A share link is created two ways:</p>
+<ul>
+<li><strong>Automatically</strong>, right after a recording finishes, <em>if the popup is open and the file is 100&nbsp;MB or smaller</em>. The extension prepares the link so it is ready if you want to share.</li>
+<li><strong>Manually</strong>, from the "Share" button in the extension's library side panel.</li>
+</ul>
+<p>Here is exactly how it works:</p>
+<ol>
+<li>The recording is <strong>encrypted on your device</strong> using AES-GCM with a 256-bit key. Your browser generates the key; it never leaves your device except inside the link itself.</li>
+<li>Only the <strong>encrypted (unreadable) file</strong> is uploaded over HTTPS to our share service at <code>share.lecture-recorder.app</code> (a Cloudflare Worker backed by Cloudflare R2 storage).</li>
+<li>The <strong>decryption key is placed in the link's URL fragment</strong> (the part after the <code>#</code>). By web design, the fragment is <strong>never sent to our server</strong> — it stays in the browser of whoever opens the link. That is what makes the share end-to-end encrypted: our server only ever holds ciphertext it has no key for.</li>
+<li>Anyone who opens the link (including via the QR code) downloads the encrypted file and decrypts it locally in their browser using the key from the fragment.</li>
+<li><strong>The encrypted file is automatically deleted from our server 15 minutes after it is created.</strong> After that the link stops working.</li>
+</ol>
+<p>What our share service can and cannot see: it <strong>cannot</strong> read the content of your recording (it only holds an encrypted blob with no key). It <strong>does</strong> observe, as any web server does, the size of the encrypted blob, the time it was uploaded, and the IP address of the device that uploaded it (in standard server request logs). We do not use these to build a profile and they are not linked to your identity.</p>
+
+<h2><span class="num">06</span>On-device recordings library</h2>
+<p>So the extension can offer an in-app player and the share feature above, your recordings are <strong>kept in the browser's private storage</strong> (the Origin Private File System, OPFS) on your own device. This storage is private to the extension — it is not the cloud, and these files are never uploaded anywhere on their own.</p>
+<p>The library is capped at about <strong>3&nbsp;GB</strong>. When it fills up, the oldest recording's library copy is automatically removed to make room (your separately downloaded file in your Downloads folder is not affected). You can also press <strong>Delete</strong> on any recording to remove its library copy at any time — again, this never touches the file you downloaded.</p>
+
+<h2><span class="num">07</span>The 300-minute monthly limit</h2>
 <p>To prevent abuse of the free service, each installation can use up to 300 minutes of AI Notes per rolling 30 days. We track this with:</p>
 <ul>
 <li>An anonymous <code>install_id</code> — a random UUID generated on first run, stored in <code>chrome.storage.local</code> on your device.</li>
@@ -189,32 +210,41 @@ footer.site .footer-links{display:flex;gap:20px}
 <p>The <code>install_id</code> is not linked to your name, email, IP address (which we discard after each request), Google account, or any other personally identifiable information. Uninstalling and reinstalling the extension generates a new <code>install_id</code> and a new quota.</p>
 <p><strong>When you hit the limit:</strong> the recording still works and the media file is still saved to Downloads. We just do not generate the <code>.docx</code> for that session. The widget shows the reset date.</p>
 
-<h2><span class="num">06</span>Future Google Sign-In</h2>
+<h2><span class="num">08</span>Future Google Sign-In</h2>
 <p>We plan to add an optional Google Sign-In as a way to raise the 300-minute limit. <strong>It will not be required to use the extension.</strong> If and when you choose to sign in, we will only receive your Google account email and use it solely to attach the higher quota to your account. We will publish an updated policy before launching this feature.</p>
 
-<h2><span class="num">07</span>Permissions used</h2>
+<h2><span class="num">09</span>Permissions used</h2>
 <ul>
 <li><code>tabCapture</code> — to record audio and video of the active tab.</li>
+<li><code>offscreen</code> — to run the recorder, the audio pipeline, and share uploads in a background document (required by Chrome Manifest V3, so recording continues while you switch tabs).</li>
 <li><code>downloads</code> — to save the recording (and the <code>.docx</code>) to your Downloads folder.</li>
-<li><code>storage</code> — to remember your settings, your <code>install_id</code>, and your remaining quota.</li>
-<li><code>offscreen</code> — to keep the recorder running while you switch tabs (required by Chrome Manifest V3).</li>
+<li><code>activeTab</code> — to identify and capture the tab you chose to record.</li>
+<li><code>storage</code> and <code>unlimitedStorage</code> — to remember your settings, your <code>install_id</code>, and your remaining quota, and to hold your on-device recordings library (section 06).</li>
+<li><code>sidePanel</code> — to show the library and summaries in a side panel.</li>
+<li><code>idle</code> and <code>alarms</code> — to manage recording timers and to run the one-time AI Notes retry (section 04).</li>
+<li><code>notifications</code> — to tell you when a recording or your notes are ready.</li>
 </ul>
-<p>We do not request <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>webRequest</code>, or <code>host_permissions</code> for browsing data.</p>
+<p>We do not request <code>tabs</code>, <code>history</code>, <code>cookies</code>, <code>webRequest</code>, or any <code>host_permissions</code> for browsing data. The extension does not inject scripts into web pages you visit.</p>
 
-<h2><span class="num">08</span>Data retention summary</h2>
+<h2><span class="num">10</span>Data retention summary</h2>
 <table class="retention">
 <thead><tr><th>Data</th><th>Where</th><th>Kept for</th></tr></thead>
 <tbody>
-<tr><td>Recording (.m4a / .mp4)</td><td>Your device</td><td>Until you delete it</td></tr>
+<tr><td>Recording (.m4a / .mp4)</td><td>Your device (Downloads)</td><td>Until you delete it</td></tr>
+<tr><td>Recording copy in the in-app library</td><td>Your device (browser private storage)</td><td>Until you delete it, or auto-evicted at the ~3&nbsp;GB cap (oldest first)</td></tr>
 <tr><td>Notes (.docx)</td><td>Your device</td><td>Until you delete it</td></tr>
 <tr><td>Audio uploaded for AI Notes</td><td>Our server</td><td>Within 60 seconds</td></tr>
 <tr><td>Transcript on our server</td><td>Our server</td><td>Within 60 seconds</td></tr>
+<tr><td>Encrypted file for a share link</td><td>Our share server (ciphertext only — we hold no key)</td><td>15 minutes, then deleted</td></tr>
 <tr><td>install_id + quota counter</td><td>Our server</td><td>Until you uninstall (deletable on request)</td></tr>
-<tr><td>Server access logs</td><td>Our server</td><td>14 days</td></tr>
+<tr><td>Server access logs (incl. IP)</td><td>Our server</td><td>14 days</td></tr>
 </tbody>
 </table>
 
-<h2><span class="num">09</span>Your rights (GDPR, UK GDPR, CCPA)</h2>
+<h2><span class="num">11</span>Ratings &amp; feedback links</h2>
+<p>The extension shows a small "Rate us" prompt and, when you uninstall, opens a short feedback page. These are just <strong>links</strong> — one to a Google Form (a <code>forms.gle</code> address) and one to our page on the Chrome Web Store. The extension itself does not collect any rating or feedback data. The form is hosted by Google, not by us; it does not ask for your email, and anything you type there is optional and goes to Google's form, subject to Google's privacy policy.</p>
+
+<h2><span class="num">12</span>Your rights (GDPR, UK GDPR, CCPA)</h2>
 <p>Even though we hold almost nothing, you can:</p>
 <ul>
 <li>Ask what we have linked to your <code>install_id</code></li>
@@ -228,13 +258,13 @@ footer.site .footer-links{display:flex;gap:20px}
 <li><code>install_id</code> + quota counter — our <strong>legitimate interest</strong> in preventing service abuse.</li>
 </ul>
 
-<h2><span class="num">10</span>Children</h2>
+<h2><span class="num">13</span>Children</h2>
 <p>Lecture Recorder is intended for users 13 and older. We do not knowingly collect data from children under 13. Since we do not collect names, emails, or IP-linked profiles in the first place, we have no way to identify a child user. If you are a parent and believe we have data tied to your child's <code>install_id</code>, email us and we will delete it.</p>
 
-<h2><span class="num">11</span>Changes to this policy</h2>
+<h2><span class="num">14</span>Changes to this policy</h2>
 <p>If we change this policy, we will update the "Last updated" date at the top of this page and post a notice in the extension before the change takes effect.</p>
 
-<h2><span class="num">12</span>Contact</h2>
+<h2><span class="num">15</span>Contact</h2>
 <p><strong>lecturerecorder8@gmail.com</strong></p>
 
 </article></div></main>
