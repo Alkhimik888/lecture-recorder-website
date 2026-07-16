@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<meta name="description" content="Privacy policy for the Lecture Recorder Chrome extension. Recordings stay on your device unless you use AI Notes or create a share link. Shared files are end-to-end encrypted; the AI Notes audio is deleted within 60 seconds."/>
+<meta name="description" content="Privacy policy for the Lecture Recorder Chrome extension. Recordings stay on your device unless you use AI Notes or create a share link. Share links are end-to-end encrypted and self-destruct in 15 minutes."/>
 <title>Privacy Policy — Lecture Recorder</title>
 <link rel="icon" type="image/png" sizes="32x32" href="icons/icon32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="icons/icon16.png"/>
@@ -156,12 +156,12 @@ footer.site .footer-links{display:flex;gap:20px}
 
 <span class="eyebrow">Privacy policy</span>
 <h1>What we do with your <span class="accent">recordings</span></h1>
-<p class="meta-line">Last updated · July 2, 2026 · Applies to all versions of the Lecture Recorder Chrome extension.</p>
+<p class="meta-line">Last updated · July 16, 2026 · Applies to all versions of the Lecture Recorder Chrome extension.</p>
 
-<p class="lead">By default your recording stays on your device. It only leaves your device in two cases you control: when you use AI Notes (audio is sent to our server, then deleted within 60 seconds), and when a share link is created (the file is end-to-end encrypted on your device before it is uploaded, and erased from our server after 15 minutes).</p>
+<p class="lead">By default your recording stays on your device. It only leaves your device in two cases you control: when you use AI Notes (the recording is uploaded to our server to create your transcript and notes; we keep them so the extension can re-open and re-download your notes, and delete them on request), and when a share link is created (the file is end-to-end encrypted on your device before it is uploaded, and erased from our server after 15 minutes).</p>
 
 <h2><span class="num">01</span>The short version</h2>
-<p>We record the active browser tab to a file in your Downloads folder, and also keep a copy in the browser's private storage so you can replay and share it from inside the extension. If you use AI Notes, we send the audio to our server, transcribe and summarize it, send you a <code>.docx</code>, and delete the audio within 60 seconds. If you share a recording, the file is <strong>encrypted on your device</strong> before it is uploaded, and the encrypted copy is erased from our server after 15 minutes. <strong>We do not ask for your name, email, or any account. We do not train AI on your recordings.</strong></p>
+<p>We record the active browser tab to a file in your Downloads folder, and also keep a copy in the browser's private storage so you can replay and share it from inside the extension. If you use AI Notes, we send the audio to our server, transcribe and summarize it, and send you a <code>.docx</code>; the recording, transcript and notes stay on our server so you can re-open your notes later, and we delete them on request. If you share a recording, the file is <strong>encrypted on your device</strong> before it is uploaded, and the encrypted copy is erased from our server after 15 minutes. <strong>We do not ask for your name, email, or any account. We do not train AI on your recordings.</strong></p>
 
 <h2><span class="num">02</span>What we record</h2>
 <p>When you press Record, the extension captures audio and video from the active browser tab using Chrome's <code>tabCapture</code> API. The recording is written directly to your Downloads folder as an <code>.m4a</code> or <code>.mp4</code> file, and a copy is also kept in the browser's private on-device storage (OPFS) so the extension can offer an in-app player and sharing (see sections 05 and 06). This file stays on your device — we never see it — unless you choose to use AI Notes on it (section 04) or create a share link for it (section 05).</p>
@@ -170,13 +170,13 @@ footer.site .footer-links{display:flex;gap:20px}
 <p>We do not access your camera. The microphone is captured only when you select the "Audio + Mic" mode, and only for the duration of that recording. We do not capture other tabs, your screen outside the tab, your typing, your clipboard, or your browsing history. We do not read the content of pages you visit, with one narrow, opt-in exception you trigger yourself: on a YouTube video page, if you press the "Get YT Transcript" button, the extension reads only that video's own caption text (its subtitles) so it can turn them into notes for you. It never reads any other page content, and it only does this on the tab you are on, at the moment you click. The recorder itself only runs while you press Record and stops the moment you press Stop.</p>
 
 <h2><span class="num">04</span>AI Notes</h2>
-<p>AI Notes is enabled by default. After you stop recording, here is exactly what happens:</p>
+<p>AI Notes is enabled by default. If you recorded in <strong>Audio&nbsp;+&nbsp;Mic</strong> mode, the audio uploaded here <strong>includes your microphone track</strong> — your own voice and any sounds your microphone picked up (for example, other people speaking in the room) are part of what is sent for transcription. Tab-audio recordings contain only the sound of the tab you chose. After you stop recording, here is exactly what happens:</p>
 <ol>
 <li>The audio file is uploaded over HTTPS to our backend server. If the upload is interrupted before it finishes (for example, you close the browser mid-upload), the extension will automatically retry it <strong>once</strong> on the next browser start, re-uploading the audio from the on-device copy. No new data category is involved — it is the same AI Notes audio you had already chosen to process.</li>
 <li>The audio is sent to our <strong>transcription sub-processor</strong>. Their API is configured with zero data retention — they do not store or train on submitted audio.</li>
 <li>The transcript is sent to our <strong>summary sub-processor</strong>. Their API does not train on submitted data.</li>
 <li>We assemble a <code>.docx</code> file with Summary on top and Transcript below, and send it back to your browser, which saves it to your Downloads folder.</li>
-<li><strong>Within 60 seconds of returning the <code>.docx</code>, the audio file is deleted from our server. The transcript is deleted at the same time. We keep nothing.</strong></li>
+<li><strong>After the <code>.docx</code> is returned, the recording, the transcript and your generated notes stay on our server so the extension can re-open and re-download your notes later. You can have them deleted at any time (section 12).</strong></li>
 </ol>
 <p>We do not use your recordings, transcripts, or summaries to train our models. Our sub-processors — a speech-to-text transcription provider and a large-language-model summarization provider — are contractually prohibited from doing so. If we add or change a vendor, we will update this policy first. To request the current, named list of sub-processors, email us at the address in section 15.</p>
 
@@ -234,8 +234,8 @@ footer.site .footer-links{display:flex;gap:20px}
 <tr><td>Recording (.m4a / .mp4)</td><td>Your device (Downloads)</td><td>Until you delete it</td></tr>
 <tr><td>Recording copy in the in-app library</td><td>Your device (browser private storage)</td><td>Until you delete it, or auto-evicted at the ~3&nbsp;GB cap (oldest first)</td></tr>
 <tr><td>Notes (.docx)</td><td>Your device</td><td>Until you delete it</td></tr>
-<tr><td>Audio uploaded for AI Notes</td><td>Our server</td><td>Within 60 seconds</td></tr>
-<tr><td>Transcript on our server</td><td>Our server</td><td>Within 60 seconds</td></tr>
+<tr><td>Audio uploaded for AI Notes</td><td>Our server</td><td>Until you ask us to delete it (section 12)</td></tr>
+<tr><td>Transcript and generated notes</td><td>Our server</td><td>Kept so you can re-open your notes; deleted on request (section 12)</td></tr>
 <tr><td>Encrypted file for a share link</td><td>Our share server (ciphertext only — we hold no key)</td><td>15 minutes, then deleted</td></tr>
 <tr><td>install_id + quota counter</td><td>Our server</td><td>Until you uninstall (deletable on request)</td></tr>
 <tr><td>Server access logs (incl. IP)</td><td>Our server</td><td>14 days</td></tr>
