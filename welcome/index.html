@@ -141,6 +141,27 @@
   </main>
 
 <script>
+/* First-party install attribution: fixed enums plus random IDs only. */
+(function () {
+  var url = new URL(location.href);
+  var aid = url.searchParams.get('aid') || '';
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(aid)) return;
+  url.searchParams.delete('aid');
+  history.replaceState(null, '', url.pathname + url.search + url.hash);
+  try {
+    fetch('https://share.lecture-recorder.app/api/analytics', {
+      method: 'POST', mode: 'no-cors', credentials: 'omit', cache: 'no-store', keepalive: true,
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify({
+        event: 'welcome_opened', feature: 'extension', outcome: 'success', source: 'website',
+        sessionId: crypto.randomUUID(), eventId: crypto.randomUUID(), attributionId: aid,
+        acquisitionSource: 'cws', acquisitionCampaign: 'welcome', entrypoint: 'website',
+        locale: navigator.language || 'unknown'
+      })
+    }).catch(function () {});
+  } catch (_) {}
+})();
+
 (function(){
   var html = document.documentElement;
   var btn = document.getElementById('themeToggle');
