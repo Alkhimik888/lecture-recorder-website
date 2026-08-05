@@ -156,7 +156,7 @@ footer.site .footer-links{display:flex;gap:20px}
 
 <span class="eyebrow">Privacy policy</span>
 <h1>What we do with your <span class="accent">recordings</span></h1>
-<p class="meta-line">Last updated · July 22, 2026 · Applies to all versions of the Lecture Recorder Chrome extension.</p>
+<p class="meta-line">Last updated · August 5, 2026 · Applies to the next telemetry-enabled release of the Lecture Recorder Chrome extension.</p>
 
 <p class="lead">By default your recording stays on your device. It only leaves your device in two cases you control: when you use AI Notes (the recording is uploaded to our server to create your transcript and notes; we keep them so the extension can re-open and re-download your notes, and delete them on request), and when a share link is created (the file is end-to-end encrypted on your device before it is uploaded, and erased from our server after 15 minutes).</p>
 
@@ -212,6 +212,9 @@ footer.site .footer-links{display:flex;gap:20px}
 
 <h2><span class="num">08</span>No accounts, no sign-in</h2>
 <p>Lecture Recorder has <strong>no accounts and no sign-in</strong>. You never create a login, and we never receive a Google account, name, or email in order for you to use the extension. Everything is keyed to the anonymous <code>install_id</code> described above, which is not tied to your identity.</p>
+<p><strong>Anonymous product analytics.</strong> The extension sends small first-party events when it is installed or updated, opened, starts/completes/fails recording or AI Notes, and when you use Share, Copy link, or QR. Safe fields can include the extension version, broad feature and outcome category, recording mode, file format, interface entry point, language code, operation time and approximate byte or item count. They never include your recording, transcript, notes, filename, page address, Share link, Share token, clipboard content, name, email, or account.</p>
+<p>Events carry the random <code>install_id</code>, a short-lived random session number, a random event number used to remove retry duplicates and, when present, a random acquisition number used to connect an install redirect with the Welcome page. Our Cloudflare Worker validates them and stores only one-way hashes of the install, session, acquisition and temporary Share identifiers. The random event number is stored only for deduplication. Cloudflare derives the request country at the edge; product analytics does not store raw IP addresses or full browser User-Agent strings.</p>
+<p>We use this data to measure active installations, feature adoption, reliability, retention, versions, broad geography, and the Share/Copy/QR funnel. It is not used for ads, cross-site tracking, credit decisions, sale, or personal profiling. Cloudflare Analytics Engine keeps event data for up to three months; aggregate reports without identifiers may be kept longer. We do not use session replay inside the extension or Share recipient page.</p>
 
 <h2><span class="num">09</span>Permissions used</h2>
 <ul>
@@ -237,6 +240,7 @@ footer.site .footer-links{display:flex;gap:20px}
 <tr><td>Transcript and generated notes</td><td>Our server</td><td>Kept so you can re-open your notes; deleted on request (section 12)</td></tr>
 <tr><td>Encrypted file for a share link</td><td>Our share server (ciphertext only — we hold no key)</td><td>15 minutes, then deleted</td></tr>
 <tr><td>install_id + quota counter</td><td>Our server</td><td>Until you uninstall (deletable on request)</td></tr>
+<tr><td>Anonymous product events + hashed identifiers</td><td>Cloudflare Analytics Engine</td><td>3 months; identifier-free aggregate reports may be kept longer</td></tr>
 <tr><td>Server access logs (incl. IP)</td><td>Our server</td><td>14 days</td></tr>
 </tbody>
 </table>
@@ -256,6 +260,7 @@ footer.site .footer-links{display:flex;gap:20px}
 <ul>
 <li>AI Notes processing — your <strong>consent</strong> (granted when you keep AI Notes enabled in Settings).</li>
 <li><code>install_id</code> + quota counter — our <strong>legitimate interest</strong> in preventing service abuse.</li>
+<li>Bounded anonymous product events — our <strong>legitimate interest</strong> in measuring reliability, feature use and retention without collecting user content or account identity.</li>
 </ul>
 
 <h2><span class="num">13</span>Children</h2>
